@@ -22,7 +22,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# ------------------ Custom CSS for Mobile-Like UI ------------------
+# ------------------ Custom CSS ------------------
 st.markdown(
     """
     <style>
@@ -32,6 +32,16 @@ st.markdown(
         font-family: 'Trebuchet MS', sans-serif;
     }
 
+    /* Main Title */
+    .app-title {
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.5em;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
     /* Card style */
     .card {
         background-color: white;
@@ -39,13 +49,6 @@ st.markdown(
         border-radius: 12px;
         box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         margin-bottom: 20px;
-    }
-
-    /* Section titles */
-    h1, h2, h3 {
-        text-align: center;
-        color: #2c3e50;
-        font-weight: bold;
     }
 
     /* Dropdown style */
@@ -87,7 +90,7 @@ st.markdown(
 
     /* Responsive tweaks for mobile */
     @media (max-width: 600px) {
-        h1 {
+        .app-title {
             font-size: 1.8em;
         }
         div.stButton > button {
@@ -101,8 +104,9 @@ st.markdown(
 )
 
 # ------------------ UI ------------------
-st.markdown("<h1>📏 Height Converter</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='app-title'>📏 Height Converter</h1>", unsafe_allow_html=True)
 
+# Input Card
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     conversion = st.selectbox(
@@ -112,30 +116,27 @@ with st.container():
     value = st.number_input("Enter value:", min_value=0.0, format="%.2f")
     st.markdown('</div>', unsafe_allow_html=True)
 
+# Conversion Logic
 result = None
 if st.button("↓"):  # circular button
     if conversion == "Inch ➝ Feet":
         result = inch_to_feet(value)
-        left_label, right_label = "Feet", None
-
+        unit = "Feet"
     elif conversion == "Feet ➝ Metre":
         result = feet_to_m(value)
-        left_label, right_label = "Metre", None
-
+        unit = "Metre"
     elif conversion == "Feet ➝ Inch":
         result = feet_to_inch(value)
-        left_label, right_label = "Inch", None
-
+        unit = "Inch"
     elif conversion == "Metre ➝ Feet":
         result = m_to_feet(value)
-        left_label, right_label = "Feet", None
+        unit = "Feet"
 
-    # Show result in card-style box
     if result is not None:
         st.markdown(
             f"""
             <div style="display:flex; justify-content:center;">
-                <div class="result-box">{result:.2f} {left_label}</div>
+                <div class="result-box">{result:.2f} {unit}</div>
             </div>
             """,
             unsafe_allow_html=True
